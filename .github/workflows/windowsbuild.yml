@@ -22,7 +22,7 @@ jobs:
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
     
-    - name: Create output dir
+    - name: Create output directory
       run: mkdir D:\output
       shell: bash
 
