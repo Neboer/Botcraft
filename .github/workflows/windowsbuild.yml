@@ -21,13 +21,24 @@ jobs:
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
+    
+    - name: Create output dir
+      run: mkdir D:\output
+      shell: bash
 
     - name: Configure CMake
       shell: bash
       working-directory: ${{runner.workspace}}/build
-      run: cmake $GITHUB_WORKSPACE -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DGAME_VERSION=latest -DBOTCRAFT_BUILD_EXAMPLES=ON -DBOTCRAFT_COMPRESSION=ON -DBOTCRAFT_ENCRYPTION=ON -DBOTCRAFT_USE_OPENGL_GUI=OFF
+      run: cmake $GITHUB_WORKSPACE -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DGAME_VERSION=latest -DBOTCRAFT_BUILD_EXAMPLES=ON -DBOTCRAFT_COMPRESSION=ON -DBOTCRAFT_ENCRYPTION=ON -DBOTCRAFT_USE_OPENGL_GUI=OFF -DBOTCRAFT_OUTPUT_DIR=D:\output
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
       shell: bash
       run: cmake --build . --config $BUILD_TYPE
+
+    - name: Release
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: Botcraft-x86_64-w32
+        path: D:\output
+      
